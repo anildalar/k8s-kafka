@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: kafka
+  namespace: kafka
+spec:
+  serviceName: kafka
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka
+  template:
+    metadata:
+      labels:
+        app: kafka
+    spec:
+      containers:
+        - name: kafka
+          image: apache/kafka:3.7.0
+          ports:
+            - containerPort: 9092
+            - containerPort: 9093
+          command:
+            - sh
+            - -c
+            - |
+              /opt/kafka/bin/kafka-storage.sh format \
+                --ignore-formatted \
+                --cluster-id my-cluster-1 \
+                --config /etc/kafka/server.properties && \
+              /opt/kafka/bin/kafka-server-start.sh /etc/kafka/server.properties
+          volumeMounts:
+            - name: kafka-config
+              mountPath: /etc/kafka/server.properties
+              subPath: server.properties
+            - name: kafka-data
+              mountPath: /var/lib/kafka/data
+      volumes:
+        - name: kafka-config
+          configMap:
+            name: kafka-config
+  volumeClaimTemplates:
+    - metadata:
+        name: kafka-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi
