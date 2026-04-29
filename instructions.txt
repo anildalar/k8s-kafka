@@ -29,9 +29,18 @@ $ Created topic test-topic.
 🟢 3. Describe Topic (see partitions)
 ./kafka-topics.sh --describe \
   --topic test-topic \
-  --bootstrap-server localhost:9092
+  --bootstrap-server kafka:9092
 
 🟢 4. Publish Messages (Producer)
 ./kafka-console-producer.sh \
   --topic test-topic \
-  --bootstrap-server localhost:9092
+  --bootstrap-server kafka:9092
+
+
+kafka-0:/opt/kafka/bin$ ./kafka-get-offsets.sh \
+  --bootstrap-server kafka:9092 \
+  --topic test-topic
+test-topic:0:3
+test-topic:1:12
+test-topic:2:5
+kafka-0:/opt/kafka/bin$
