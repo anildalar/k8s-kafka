@@ -16,7 +16,7 @@ cd /opt/kafka/bin/
 🟢 3. Create Topic (with partitions)
 ./kafka-topics.sh --create \
   --topic test-topic \
-  --bootstrap-server localhost:9092 \
+  --bootstrap-server kafka-0.kafka:9092 \
   --partitions 3 \
   --replication-factor 1
 
@@ -24,23 +24,17 @@ $ Created topic test-topic.
 
 👉 Verify:
 
-./kafka-topics.sh --list --bootstrap-server localhost:9092
+./kafka-topics.sh --list --bootstrap-server kafka-0.kafka:9092
 
 🟢 3. Describe Topic (see partitions)
 ./kafka-topics.sh --describe \
   --topic test-topic \
-  --bootstrap-server kafka:9092
+  --bootstrap-server kafka-0.kafka:9092
 
 🟢 4. Publish Messages (Producer)
 ./kafka-console-producer.sh \
   --topic test-topic \
-  --bootstrap-server kafka:9092
+  --bootstrap-server kafka-0.kafka:9092
 
 
-kafka-0:/opt/kafka/bin$ ./kafka-get-offsets.sh \
-  --bootstrap-server kafka:9092 \
-  --topic test-topic
-test-topic:0:3
-test-topic:1:12
-test-topic:2:5
-kafka-0:/opt/kafka/bin$
+./kafka-console-consumer.sh \ --topic test-topic \ --bootstrap-server kafka-0.kafka:9092 \ --partition 0 \ --offset earliest
