@@ -4,11 +4,12 @@ kubectl apply -f kafka-config.yaml
 kubectl apply -f kafka-statefulset.yaml
 kubectl apply -f kafka-service.yaml
 
-kubectl exec -it kafka-0 -n kafka -- bash
-
-kubectl logs -f kafka-0 -n kafka
-
 Check the logs
+kubectl logs -f kafka-0 -n kafka
+# Check for text "Kafka Server started"
+
+Go inside the pod
+kubectl exec -it kafka-0 -n kafka -- bash
 
 cd /opt/kafka/bin/
 ./kafka-console-consumer.sh \
