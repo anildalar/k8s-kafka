@@ -4,14 +4,34 @@ kubectl apply -f kafka-config.yaml
 kubectl apply -f kafka-statefulset.yaml
 kubectl apply -f kafka-service.yaml
 
-Check the logs
+🟢 1. Check the logs
 kubectl logs -f kafka-0 -n kafka
 # Check for text "Kafka Server started"
 
-Go inside the pod
+🟢 2. Go inside the pod
 kubectl exec -it kafka-0 -n kafka -- bash
 
 cd /opt/kafka/bin/
-./kafka-console-consumer.sh \
+
+🟢 3. Create Topic (with partitions)
+./kafka-topics.sh --create \
+  --topic test-topic \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 \
+  --replication-factor 1
+
+$ Created topic test-topic.
+
+👉 Verify:
+
+./kafka-topics.sh --list --bootstrap-server localhost:9092
+
+🟢 3. Describe Topic (see partitions)
+./kafka-topics.sh --describe \
+  --topic test-topic \
+  --bootstrap-server localhost:9092
+
+🟢 4. Publish Messages (Producer)
+./kafka-console-producer.sh \
   --topic test-topic \
   --bootstrap-server localhost:9092
