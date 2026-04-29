@@ -10,7 +10,7 @@ kubectl logs -f kafka-0 -n kafka
 
 Check the logs
 
-cd cd /opt/kafka/bin/
+cd /opt/kafka/bin/
 ./kafka-console-consumer.sh \
   --topic test-topic \
   --bootstrap-server localhost:9092
